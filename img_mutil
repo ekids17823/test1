@@ -1,0 +1,57 @@
+當您需要在網頁上顯示大量圖片時，可以考慮使用網格或相片牆排版，以提供更好的閱讀體驗。以下是一個簡單的 HTML 範例，說明如何實現這個功能：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-gap: 10px;
+    }
+    .image-container {
+      position: relative;
+      overflow: hidden;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    img:hover {
+      transform: scale(1.1);
+    }
+  </style>
+  <title>Image Gallery</title>
+</head>
+<body>
+  <div class="gallery">
+    <!-- 將您的圖片放在這裡，例如： -->
+    <div class="image-container">
+      <img src="image1.jpg" alt="Image 1">
+    </div>
+    <div class="image-container">
+      <img src="image2.jpg" alt="Image 2">
+    </div>
+    <!-- ... -->
+  </div>
+</body>
+</html>
+```
+
+這個範例使用 CSS Grid 將圖片排版在網格中，並在鼠標懸停時放大圖片以提供更好的閱讀體驗。請根據需要調整圖片數量和大小。 (When displaying a large number of images on a webpage, consider using a grid or photo wall layout to improve the reading experience. Here's a simple HTML example showing how to achieve this:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .gallery {
+      display: grid;
+      grid-
