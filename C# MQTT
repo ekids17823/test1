@@ -1,0 +1,55 @@
+using System;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
+using System.Text;
+using System.Threading;
+
+class Publisher
+{
+    static bool isMessagePublished = false;
+
+    static void Main(string[] args)
+    {
+        // 創建 MQTT 客戶端
+        MqttClient client = new MqttClient("localhost");
+
+        // 設置消息發布事件處理器
+        client.MqttMsgPublished += Client_MqttMsgPublished;
+
+        // 連接到 MQTT 代理
+        string clientId = Guid.NewGuid().ToString();
+        client.Connect(clientId);
+
+        Console.WriteLine("Connected to MQTT broker.");
+
+        // 發布消息
+        string topic = "test/topic";
+        string message = "Hello MQTT";
+        ushort msgId = client.Publish(topic, Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+
+        Console.WriteLine("Message published, waiting for confirmation...");
+
+        // 等待消息發布確認
+        while (!isMessagePublished)
+        {
+            Thread.Sleep(100); // 短暫休眠，減少CPU佔用
+        }
+
+        // 斷開連接
+        client.Disconnect();
+        Console.WriteLine("Disconnected from MQTT broker.");
+    }
+
+    private static void Client_MqttMsgPublished(object sender, MqttMsgPublishedEventArgs e)
+    {
+        if (e.IsPublished)
+        {
+            Console.WriteLine($"Message with ID {e.MessageId} published successfully.");
+            isMessagePublished = true;
+        }
+        else
+        {
+            Console.WriteLine($"Failed to publish message with ID {e.MessageId}.");
+        }
+    }
+}
