@@ -1,0 +1,19 @@
+https://hackmd.io/@Not/HyKWFsbFV
+
+[solution_directory]/.vs/config/applicationHost.config
+
+在 applicationHost.config 找到這一段
+virtualDirectory ，可以設定虛擬目錄
+
+<site name="WebSiteWithVirtualDirectory" id="20">
+   <application path="/" applicationPool="Clr4IntegratedAppPool">
+     <virtualDirectory path="/" physicalPath="c:\temp\website1" />
+     <virtualDirectory path="/OffSiteStuff" physicalPath="d:\temp\SubFolderApp" />
+   </application>
+   <bindings>
+      <binding protocol="http" bindingInformation="*:1132:localhost" />
+   </bindings>
+</site>
+
+https://stackoverflow.com/questions/8735713/creating-virtual-directories-in-iis-express
+https://stackoverflow.com/questions/28701647/applicationhost-config-file-path-in-iis-7-7-5-8-8-5-and-iis-10
