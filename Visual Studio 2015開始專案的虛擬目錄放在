@@ -1,3 +1,4 @@
+Method 1.
 https://hackmd.io/@Not/HyKWFsbFV
 
 [solution_directory]/.vs/config/applicationHost.config
@@ -17,3 +18,10 @@ virtualDirectory ，可以設定虛擬目錄
 
 https://stackoverflow.com/questions/8735713/creating-virtual-directories-in-iis-express
 https://stackoverflow.com/questions/28701647/applicationhost-config-file-path-in-iis-7-7-5-8-8-5-and-iis-10
+
+
+Method 2.
+https://www.cnblogs.com/joe-yang/archive/2013/02/21/2920892.html
+1， 在web属性中，点击创建"Create Virtual Directory".
+2, 在IIS中将显示创建好的虚拟目录
+注意：如果虚拟目录层数大于1，则需要在C:\inetpub\wwwroot中手动创建对应的子目录。
