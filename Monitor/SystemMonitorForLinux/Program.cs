@@ -48,9 +48,9 @@ class PerformanceMonitor
 
     private static void CollectData(Object source, ElapsedEventArgs e)
     {
-        string host = "172.30.24.18";
-        string username = "ekids";
-        string password = "y361175568ag1";
+        string host = "0.0.0.0";
+        string username = "user";
+        string password = "password";
         using (var client = new SshClient(host, username, password))
         {
             client.Connect();
