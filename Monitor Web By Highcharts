@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>監控儀表板</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+
+<div id="cpu-container" style="width:100%; height:400px;"></div>
+<div id="memory-container" style="width:100%; height:400px;"></div>
+<div id="disk-container" style="width:100%; height:400px;"></div>
+<div id="network-container" style="width:100%; height:400px;"></div>
+<div id="gpu-container" style="width:100%; height:400px;"></div>
+
+<script>
+// 模擬數據生成
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generateRandomData() {
+    return Array.from({ length: 10 }, () => getRandomInt(10, 100));
+}
+
+// CPU 使用率
+Highcharts.chart('cpu-container', {
+    chart: { type: 'line' },
+    title: { text: 'CPU 使用率 (%)' },
+    xAxis: { categories: ['10秒', '20秒', '30秒', '40秒', '50秒', '60秒', '70秒', '80秒', '90秒', '100秒'] },
+    yAxis: { title: { text: '百分比 (%)' } },
+    series: [{
+        name: 'CPU 使用率',
+        data: generateRandomData()
+    }]
+});
+
+// 記憶體使用率和使用量
+Highcharts.chart('memory-container', {
+    chart: { type: 'line' },
+    title: { text: '記憶體使用情況' },
+    xAxis: { categories: ['10秒', '20秒', '30秒', '40秒', '50秒', '60秒', '70秒', '80秒', '90秒', '100秒'] },
+    yAxis: [{
+        title: { text: '百分比 (%)' },
+        opposite: true
+    }, {
+        title: { text: '使用量 (GB)' }
+    }],
+    series: [{
+        name: '記憶體使用率 (%)',
+        data: generateRandomData(),
+        yAxis: 0
+    }, {
+        name: '記憶體使用量 (GB)',
+        data: generateRandomData(),
+        yAxis: 1
+    }]
+});
+
+// 硬碟讀取/寫入速度
+Highcharts.chart('disk-container', {
+    chart: { type: 'line' },
+    title: { text: '硬碟讀取/寫入速度 (MB/s)' },
+    xAxis: { categories: ['10秒', '20秒', '30秒', '40秒', '50秒', '60秒', '70秒', '80秒', '90秒', '100秒'] },
+    yAxis: { title: { text: '速度 (MB/s)' } },
+    series: [{
+        name: '讀取速度',
+        data: generateRandomData()
+    }, {
+        name: '寫入速度',
+        data: generateRandomData()
+    }]
+});
+
+// 網路上傳/下載速度
+Highcharts.chart('network-container', {
+    chart: { type: 'line' },
+    title: { text: '網路上傳/下載速度 (Mbps)' },
+    xAxis: { categories: ['10秒', '20秒', '30秒', '40秒', '50秒', '60秒', '70秒', '80秒', '90秒', '100秒'] },
+    yAxis: { title: { text: '速度 (Mbps)' } },
+    series: [{
+        name: '上傳速度',
+        data: generateRandomData()
+    }, {
+        name: '下載速度',
+        data: generateRandomData()
+    }]
+});
+
+// GPU 使用率和使用量
+Highcharts.chart('gpu-container', {
+    chart: { type: 'line' },
+    title: { text: 'GPU 使用情況' },
+    xAxis: { categories: ['10秒', '20秒', '30秒', '40秒', '50秒', '60秒', '70秒', '80秒', '90秒', '100秒'] },
+    yAxis: [{
+        title: { text: '百分比 (%)' },
+        opposite: true
+    }, {
+        title: { text: '使用量 (GB)' }
+    }],
+    series: [{
+        name: 'GPU 使用率 (%)',
+        data: generateRandomData(),
+        yAxis: 0
+    }, {
+        name: 'GPU 使用量 (GB)',
+        data: generateRandomData(),
+        yAxis: 1
+    }]
+});
+</script>
+
+</body>
+</html>
