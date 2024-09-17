@@ -1,0 +1,137 @@
+<!-- https://api.highcharts.com/highstock/rangeSelector.inputSpacing -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Range Selector Buttons</title>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <style type="text/css">
+    	.chart-container {
+            width: 48%;
+            float: left;
+            margin: 1%;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    	.row {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+	<div id="container1" class="chart-container"></div>
+	<div id="container2" class="chart-container"></div>
+</div>
+<div class="row">
+	<div id="container3" class="chart-container"></div>
+	<div id="container4" class="chart-container"></div>
+</div>
+</div>
+<script>
+	function createChart(container){
+		var chart = Highcharts.stockChart(container, {
+	        rangeSelector: {
+	            buttonTheme: { // 自訂按鈕樣式
+	                width: 100, // 按鈕寬度
+	                fill: '#e0e0e0', // 背景填充顏色
+	                stroke: '#000', // 邊框顏色
+	                'stroke-width': 1, // 邊框寬度
+	                r: 10, // 按鈕圓角半徑
+	                style: {
+	                    color: '#000', // 字體顏色
+	                    fontWeight: 'bold' // 字體加粗
+	                },
+	                states: {
+	                    hover: {
+	                        fill: '#b3b3b3' // 滑鼠懸停時的背景顏色
+	                    },
+	                    select: {
+	                        fill: '#000', // 選中時的背景顏色
+	                        style: {
+	                            color: '#fff' // 選中時的字體顏色
+	                        }
+	                    }
+	                }
+	            },
+	            // millisecond, second, minute, hour, day, week, month, year, ytd, and all.
+	            buttons: [{
+	                type: 'day',
+	                count: 1,
+	                text: '1d'
+	            }, {
+	                type: 'week',
+	                count: 1,
+	                text: '1w'
+	            }, {
+	                type: 'month',
+	                count: 3,
+	                text: '3m'
+	            }, {
+	                type: 'ytd',
+	                text: 'YTD'
+	            }, {
+	                type: 'year',
+	                count: 1,
+	                text: '1y'
+	            }, {
+	                type: 'all',
+	                text: 'All'
+	            }],	            
+		        inputDateFormat: '%b %e, %Y %H:%M',
+		        inputEditDateFormat: '%b %e, %Y %H:%M',
+	            dropdown: "always"
+	        },
+	        title: {
+	            text: 'Custom Range Selector Buttons'
+	        },
+	        series: [{
+	            name: 'AAPL Stock Price',
+	          //   data: [
+		         //    [1625097600000, 133.11],  // 2021-07-01 00:00
+		         //    [1625101200000, 134.50],  // 2021-07-01 01:00
+		         //    [1625104800000, 135.24],  // 2021-07-01 02:00
+		         //    [1625108400000, 136.96],  // 2021-07-01 03:00
+	          //       [1625097600000, 133.11],
+			        // [1625184000000, 134.50],
+			        // [1625270400000, 135.24],
+			        // [1625356800000, 136.96],
+			        // [1625443200000, 137.86],
+			        // [1625529600000, 138.50],
+			        // [1625616000000, 139.00],
+			        // [1625702400000, 140.50],
+	          //   ],
+	          	data: generateData(),
+	            tooltip: {
+	                valueDecimals: 2
+	            }
+	        }]
+	    });
+	}
+    
+
+    function generateData() {
+	    const data = [];
+	    const startTime = Date.now() - 7 * 24 * 60 * 60 * 1000; // 7天前的當前時間
+	    const pointCount = 1000;
+	    
+	    for (let i = 0; i < pointCount; i++) {
+	        const time = startTime + i * 1000; // 每秒的時間戳
+	        const value = Math.random() * 100; // 隨機產生數據值 (0 - 100)
+	        data.push([time, value]);
+	    }
+	    
+	    return data;
+	}
+
+	createChart('container1');
+	createChart('container2');
+	createChart('container3');
+	createChart('container4');
+
+</script>
+
+</body>
+</html>
