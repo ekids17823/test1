@@ -1,0 +1,30 @@
+function parseDateString(dateString) {
+    // 用正規表達式解析日期時間字串
+    var parts = dateString.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})/);
+
+    if (parts) {
+        // 使用 Date 構造函數來建立日期物件
+        var year = parseInt(parts[1], 10);
+        var month = parseInt(parts[2], 10) - 1; // 月份從 0 開始
+        var day = parseInt(parts[3], 10);
+        var hours = parseInt(parts[4], 10);
+        var minutes = parseInt(parts[5], 10);
+        var seconds = parseInt(parts[6], 10);
+        var milliseconds = parseInt(parts[7], 10);
+
+        // 建立 Date 物件
+        var date = new Date(year, month, day, hours, minutes, seconds, milliseconds);
+
+        // 返回從 1970 年 1 月 1 日開始的毫秒數
+        return date.getTime();
+    } else {
+        // 如果格式不正確，回傳 null 或顯示錯誤
+        return null;
+    }
+}
+
+// 範例用法
+var dateString = "2024-09-17 15:05:57.934";
+var timestamp = parseDateString(dateString);
+
+console.log(timestamp);  // 輸出：1726572757934
