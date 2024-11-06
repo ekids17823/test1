@@ -1,0 +1,70 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Calculate_Time_Duration
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            // 原始資料的 DataTable
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("DATE_TIME", typeof(DateTime));
+            dataTable.Columns.Add("EVENT_NAME", typeof(string));
+
+            // 加入資料
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 07:30"), "START");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 07:54"), "END");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 08:30"), "START");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 09:30"), "START");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 09:57"), "END");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 11:30"), "START");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 13:30"), "START");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 14:57"), "END");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 15:30"), "END");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 16:30"), "START");
+            dataTable.Rows.Add(DateTime.Parse("2024/10/31 17:02"), "END");
+
+            // 結果 DataTable
+            DataTable resultTable = new DataTable();
+            resultTable.Columns.Add("START_TIME", typeof(DateTime));
+            resultTable.Columns.Add("END_TIME", typeof(DateTime));
+
+            DateTime? startTime = null;
+
+            foreach (DataRow row in dataTable.AsEnumerable().OrderBy(r => r.Field<DateTime>("DATE_TIME")))
+            {
+                string eventName = row.Field<string>("EVENT_NAME");
+                DateTime eventTime = row.Field<DateTime>("DATE_TIME");
+
+                if (eventName == "START")
+                {
+                    // 如果是 START，且 startTime 為空，則設定 startTime
+                    if (startTime == null)
+                    {
+                        startTime = eventTime;
+                    }
+                }
+                else if (eventName == "END" && startTime != null)
+                {
+                    // 如果是 END，且已經有 startTime，則加入配對並重置 startTime
+                    resultTable.Rows.Add(startTime, eventTime);
+                    startTime = null;
+                }
+            }
+
+            // 顯示結果
+            foreach (DataRow row in resultTable.Rows)
+            {
+                Console.WriteLine($"START_TIME: {row["START_TIME"]}, END_TIME: {row["END_TIME"]}");
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
+
