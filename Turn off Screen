@@ -1,0 +1,6 @@
+;使用win+F4來關閉螢幕
+	#F4::
+	Run "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -File "D:\rom\Tips\Turn_off_Screen\CloseScreen.ps1"
+	return
+
+(Add-Type "[DllImport(""user32.dll"")] public static extern int PostMessage(int hWnd, int hMsg, int wParam, int lParam);" -Name "Win32PostMessage" -Namespace Win32Functions -PassThru)::PostMessage(0xffff, 0x0112, 0xF170, 2)
