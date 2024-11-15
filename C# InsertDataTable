@@ -1,0 +1,30 @@
+/// <summary>
+/// 将指定的DataTable插入到DataSet中的指定索引位置。
+/// </summary>
+/// <param name="dataSet">要插入DataTable的DataSet。</param>
+/// <param name="newTable">要插入的DataTable。</param>
+/// <param name="index">插入的位置索引。</param>
+public static void InsertDataTableAtPosition(DataSet dataSet, DataTable newTable, int index)
+{
+    if (index < 0 || index > dataSet.Tables.Count)
+    {
+        throw new ArgumentOutOfRangeException("index", "Index must be between 0 and the number of tables in the DataSet.");
+    }
+
+    // 暂时存储索引之后的所有表
+    List<DataTable> tempTables = new List<DataTable>();
+    while (dataSet.Tables.Count > index)
+    {
+        tempTables.Add(dataSet.Tables[index]);
+        dataSet.Tables.RemoveAt(index);
+    }
+
+    // 插入新表到指定位置
+    dataSet.Tables.Add(newTable);
+
+    // 重新添加之前移除的表
+    foreach (DataTable table in tempTables)
+    {
+        dataSet.Tables.Add(table);
+    }
+}
