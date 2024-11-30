@@ -1,0 +1,45 @@
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
+from sklearn.metrics.pairwise import cosine_similarity
+import seaborn as sns
+
+def load_images_from_folder(folder):
+    images = []
+    for filename in os.listdir(folder):
+        img_path = os.path.join(folder, filename)
+        img = image.load_img(img_path, target_size=(224, 224))
+        img_data = image.img_to_array(img)
+        images.append(img_data)
+    return np.array(images)
+
+def extract_features(images, model):
+    processed_images = preprocess_input(images)
+    features = model.predict(processed_images)
+    return features
+
+# 初始化預訓練模型
+model = VGG16(weights='imagenet', include_top=False, pooling='avg')
+
+# 讀取圖片
+folders = ['folder1', 'folder2', 'folder3']
+all_features = []
+
+for folder in folders:
+    images = load_images_from_folder(folder)
+    features = extract_features(images, model)
+    all_features.append(features)
+
+# 合併所有特徵
+all_features = np.vstack(all_features)
+
+# 計算相似性
+similarity_matrix = cosine_similarity(all_features)
+
+# 可視化
+plt.figure(figsize=(10, 8))
+sns.heatmap(similarity_matrix, cmap='viridis')
+plt.title('Image Similarity Matrix')
+plt.show()
