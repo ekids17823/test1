@@ -1,0 +1,2 @@
+https://github.com/ramensoftware/windhawk/releases/tag/v1.5.1
+https://github.com/ramensoftware/windhawk/releases/download/v1.5.1/windhawk_setup_offline.exe
