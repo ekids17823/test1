@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Table - Merge Cells</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h3 class="mb-4">Bootstrap Table - Merge Cells Example</h3>
+        <table id="table" class="table"
+               data-toggle="table">
+            <thead>
+                <tr>
+                    <th data-field="id">ID</th>
+                    <th data-field="value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>1</td></tr>
+                <tr><td>2</td><td>1</td></tr>
+                <tr><td>3</td><td>2</td></tr>
+                <tr><td>4</td><td>2</td></tr>
+                <tr><td>5</td><td>2</td></tr>
+                <tr><td>6</td><td>3</td></tr>
+                <tr><td>7</td><td>3</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const table = document.querySelector('#table');
+
+            function mergeCellsByField(fieldIndex) {
+                const rows = [...table.querySelectorAll('tbody tr')];
+                let startIndex = 0;
+
+                while (startIndex < rows.length) {
+                    const currentValue = rows[startIndex].children[fieldIndex].innerText;
+                    let count = 1;
+
+                    // 计算需要合并的行数
+                    for (let i = startIndex + 1; i < rows.length; i++) {
+                        if (rows[i].children[fieldIndex].innerText === currentValue) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    // 合并单元格
+                    if (count > 1) {
+                        const firstCell = rows[startIndex].children[fieldIndex];
+                        firstCell.rowSpan = count;
+
+                        for (let i = 1; i < count; i++) {
+                            rows[startIndex + i].children[fieldIndex].style.display = 'none';
+                        }
+                    }
+
+                    // 更新索引
+                    startIndex += count;
+                }
+            }
+
+            // 调用函数对第二列进行合并
+            mergeCellsByField(1);
+        });
+    </script>
+</body>
+</html>
