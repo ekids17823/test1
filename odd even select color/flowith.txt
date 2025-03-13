@@ -1,0 +1,48 @@
+https://flowith.io/blank
+
+onClickRow: function (row, $element) {
+    // 先移除所有行的选中样式
+    $(".table tbody tr").removeClass('selected-row');
+
+    // 为当前点击的行添加选中样式
+    const $clickedRow = $element.closest('tr');
+    $clickedRow.addClass('selected-row');
+
+    // 重新应用斑马纹样式（避免覆盖选中行）
+    applyZebraStriping();
+},
+
+// 单独封装斑马纹逻辑
+function applyZebraStriping() {
+    $(".table tbody tr:not(.selected-row)").each(function(index) {
+        const isEven = index % 2 === 1; // 排除选中行后重新计算奇偶
+        $(this).find('td:nth-child(n+2)').css(
+            'background-color', 
+            isEven ? '#f0f3fa' : '#ffffff'
+        );
+    });
+}
+
+
+/* 选中行样式 */
+.table tbody tr.selected-row td:nth-child(n+2) {
+    background-color: #f0f8ff !important;
+}
+
+/* 基础斑马纹样式（将被JavaScript覆盖） */
+.table tbody tr:nth-child(odd) td:nth-child(n+2) {
+    background-color: #ffffff;
+}
+.table tbody tr:nth-child(even) td:nth-child(n+2) {
+    background-color: #f0f3fa;
+}
+
+
+关键改进点：
+
+使用CSS类管理选中状态样式，避免样式冲突
+将斑马纹逻辑单独封装，在点击时重新计算排除选中行
+使用:not(.selected-row)选择器避免修改已选中的行
+添加!important保证样式优先级
+修正列选择器为n+2（第二列之后）
+建议在表格初始化时调用一次applyZebraStriping()初始化斑马纹效果。这种方式能更好处理动态行变化，且性能优于每次全量遍历。

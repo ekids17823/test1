@@ -1,0 +1,75 @@
+https://build.nvidia.com/deepseek-ai/deepseek-r1
+
+根据你的需求，建议改用「CSS 变量 + 自定义 class」的方式处理会更简单。以下是修改后的解决方案：
+
+// 在 CSS 定义样式规则
+<style>
+  .table tbody tr {
+    --even-bg: #f0f3fa;
+    --odd-bg: #ffffff;
+    --selected-bg: #f0f8ff;
+  }
+
+  /* 奇偶行基础样式 */
+  .table tbody tr td:nth-child(n+8) {
+    background-color: var(--row-bg);
+  }
+
+  /* 前 7 列固定白色 */
+  .table tbody tr td:nth-child(-n+7) {
+    background-color: #ffffff !important;
+  }
+
+  /* 选中行样式 */
+  .table tbody tr.selected td:nth-child(n+2) {
+    background-color: var(--selected-bg) !important;
+  }
+</style>
+
+// JavaScript 部分
+onClickRow: function (row, $element) {
+  const $table = $('.table');
+  const $targetRow = $element.closest('tr');
+
+  // 移除所有行的选中状态和动态样式
+  $table.find('tr').removeClass('selected')
+    .css('--row-bg', ''); // 清空自定义属性
+
+  // 为所有行设置奇偶背景色
+  $table.find('tr').each(function(index) {
+    const isOdd = $(this).index() % 2 === 0; // 改用行的视觉顺序
+    $(this).css('--row-bg', isOdd ? 'var(--odd-bg)' : 'var(--even-bg)');
+  });
+
+  // 设置当前选中行
+  $targetRow.addClass('selected');
+  
+  console.log('Changed background color');
+}
+
+修改说明：
+
+CSS 变量动态控制：
+
+使用 CSS 变量定义颜色，方便统一管理
+--row-bg 控制每行第8列之后的背景色
+!important 确保基础样式优先级
+行索引的正确获取：
+
+改用 $(this).index() 获取行的「视觉顺序索引」，而非循环的 index 参数
+这对 Bootstrap Table 的排序/分页功能更可靠
+选中行处理：
+
+通过 .selected class 管理选中状态
+选中时直接覆盖第2列之后的背景色
+前7列固定样式：
+
+使用 nth-child(-n+7) 精准定位前7列
+!important 确保颜色不会被覆盖
+优点：
+
+样式与逻辑分离，更易维护
+完美兼容 Bootstrap Table 的动态功能（排序/分页/搜索）
+避免 inline style 导致的样式优先级问题
+只需一次 DOM 操作，性能更好
+如果遇到表格有隐藏列的情况，可以调整 nth-child 的参数值来匹配实际列位置。
