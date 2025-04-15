@@ -1,0 +1,15 @@
+# 切割與聚類配置
+split:
+  grid: [5, 5]  # 切割為3x3
+  overlap: 0.1   # 重疊率10%
+input:
+  good_img_dir: "Good/IMG"
+  good_mask_dir: "Good/Mask"
+  bad_img_dir: "Bad/IMG"
+  bad_mask_dir: "Bad/Mask"
+output:
+  good_dir: "output/Good"
+  bad_dir: "output/Bad"
+kmeans:
+  n_clusters: 2
+  pca_dim: 2
