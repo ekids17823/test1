@@ -1,0 +1,7 @@
+import gc
+
+for img_path in batch_list:
+    img = cv2.imread(img_path)
+    # 處理流程...
+    del img
+    gc.collect()
