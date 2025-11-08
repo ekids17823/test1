@@ -1,1 +1,2 @@
-mamba shell init --shell cmd.exe --root-prefix=~/.local/share/mamba
+conda init
+C:\Users\K13226\Documents\WindowsPowerShell\profile.ps1
