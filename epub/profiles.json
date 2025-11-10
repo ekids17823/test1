@@ -1,0 +1,11 @@
+{
+  "viewer:": {
+    "Confortable Viewer": {
+      "__timestamp__": "2025-11-08T09:46:16.274229+00:00",
+      "base_font_size": 23,
+      "margin_left": 400,
+      "margin_right": 400,
+      "read_mode": "flow"
+    }
+  }
+}
