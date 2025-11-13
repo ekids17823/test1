@@ -1,0 +1,78 @@
+問題: 
+建立 TLS 用戶端 認證時發生嚴重錯誤。內部錯誤狀態為 10013。 
+ SSPI 用戶端處理常式 backgroundTaskHost
+
+
+https://www.reddit.com/r/techsupport/comments/ona5md/event_viewer_error_a_fatal_error_occurred_while/?tl=zh-hant
+https://blog.csdn.net/china_melancholy/article/details/126392533
+https://learn.microsoft.com/zh-cn/answers/questions/4104305/tls-10013
+https://shaurong.blogspot.com/2021/10/tls-10013.html
+https://forum.gamer.com.tw/C.php?bsn=71905&snA=16441
+http://api.8e.hk/news/content/5588.html
+
+可以先看發生問題的pid是甚麼程式
+
+這些網頁針對 Windows 系統 Schannel 發生「建立 TLS 用戶端認證時發生嚴重錯誤。內部錯誤狀態為 10013」的問題，總結出以下常見與有效解決方法：
+
+## 主要解決方法整理
+
+### 1. 【Internet選項調整/TLS 版本設定】
+- 在 **控制面板 > Internet選項 > [進階]** 中，啟用或調整 TLS 設定。
+  - 勾選「使用 TLS 1.0/1.1/1.2/1.3」等選項，或根據軟體需求僅啟用「TLS 1.2」。[1][2][3][4]
+  - 注意：啟用低版本 TLS 存在資安風險，僅建議解決相容性暫用。[1]
+
+### 2. 【群組原則設置／禁用 SSL 3.0】
+- 執行 `gpedit.msc`，依序進入「電腦設定 > 管理範本 > Windows元件 > Internet Explorer > Internet控制面板 > 進階頁」。
+- 設定「關閉加密支援」，選擇「已啟用」以禁用過時協議（如 SSL 3.0），重開機後驗證。[5][1]
+
+### 3. 【IIS Crypto 或 Registry 編輯】
+- 使用 **IIS Crypto 工具**：
+  - 以系統管理員身分打開，啟用「Best practice」。
+  - 在 Schannel>Client Protocols 啟用相關項目，重開機。[1]
+- 註冊表手動設定：
+  - 路徑：`HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols`
+  - 啟用/禁用 TLS 對應子鍵（如 Enabled=1/0），可針對特定版本調整。[2][1]
+
+### 4. 【排查應用程式與連線】
+- 若是特定程式（如 PotPlayer、VPN 客戶端）頻繁引發事件，可嘗試：
+  - 關閉自動連線、自動更新，或使用防火牆阻擋異常連線。
+  - 依據事件查看器（增加 EventLogging=7），收集更多日誌確認是哪一個進程或外部服務引發錯誤。[2]
+
+### 5. 【重置網路設備與命令修復】
+- 開啟命令提示字元（管理員），依序執行：
+  ```
+  netsh winsock reset
+  netsh int ip reset
+  ipconfig /release
+  ipconfig /renew
+  ipconfig /flushdns
+  ```
+- 重啟電腦，有時可解決由網路疊加造成的 TLS 問題。[1]
+
+***
+
+## 其他注意事項 & 附加建議
+- **時間同步**：確保系統日期與時間準確，避免 SSL/TLS 驗證問題。[4]
+- **應用程式相容性**：舊有軟體可能僅支援老式 SSL/TLS，需要評估是否真必須啟用過時協議。
+- **全盤更新與修復**：系統與目標應用程式皆應升級至最新版本，必要時考慮可用的修復工具或復原安裝。
+
+如果有特定軟體觸發此錯誤，建議收集更多應用程式層面的日誌，或向軟體廠商確認支援的通訊協議版本。[5][4][2][1]
+
+[1](https://learn.microsoft.com/zh-tw/answers/questions/3888834/tls-10013-windows-update-0x80248014)
+[2](https://home.gamer.com.tw/artwork.php?sn=6173253)
+[3](http://shaurong.blogspot.com/2021/10/tls-10013.html)
+[4](https://comate.baidu.com/zh/page/91l1z7ac6mi)
+[5](https://blog.csdn.net/chin)
+[6](https://www.reddit.com/r/techsupport/)
+[7](https://www.reddit.com/r/techsupport/comments/135x8tx/i_got_a_virus/)
+[8](https://www.reddit.com/r/techsupport/comments/12ee2cc/mfresidentexe_malware_or_lesser_issue/)
+[9](https://www.reddit.com/r/computers/comments/vq63v5/hello_there_i_am_in_need_of_help_because_i_am_100/)
+[10](https://www.reddit.com/r/antivirus/comments/znsdi4/systems_hangs_on_one_boot_and_then_avira_throws/)
+[11](https://home.gamer.com.tw/artwork.php?sn=6038901)
+[12](https://home.gamer.com.tw/artwork.php?sn=6066776)
+[13](https://home.gamer.com.tw/artwork.php?sn=5919983)
+[14](https://home.gamer.com.tw/artwork.php?sn=5522359)
+[15](https://home.gamer.com.tw/artwork.php?sn=6000455)
+[16](https://home.gamer.com.tw/artwork.php?sn=5788194)
+[17](https://home.gamer.com.tw/artwork.php?sn=5798189)
+[18](https://home.gamer.com.tw/artwork.php?sn=5650719)
